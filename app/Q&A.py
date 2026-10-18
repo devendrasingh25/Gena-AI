@@ -11,6 +11,8 @@ llm = ChatGroq(model="openai/gpt-oss-20b")
 st.title("Ask me Question")
 st.markdown("My QnA Bot with Langchain and Groq !")
 
+history = []
+
 if"messages" not in st.session_state:
      st.session_state.messages = [] 
 
@@ -23,9 +25,15 @@ query = st.chat_input("Ask anything...")
 
 if query :
     st.session_state.messages.append({"role" : "user" , "content" : query})
+    history.append({"role" : "user" , "content" : query})
     st.chat_message("user").markdown(query)
     res = llm.invoke(query)
+    history.append({"role": "ai" , "content" : res.content})
     st.chat_message("ai").markdown(res.content)
     st.session_state.messages.append({"role" : "ai" , "content" : res.content})
+
+
+ 
+ 
 
 
